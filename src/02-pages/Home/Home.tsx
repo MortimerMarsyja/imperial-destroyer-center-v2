@@ -3,17 +3,24 @@ import useFetch from "04-hooks/use-fetcher";
 import { useEffect, useReducer } from "react";
 import useSWR from "swr";
 // styles
+import StyledHome from "./Home.styled";
 // components
 import Image from "@components/Image";
-// utils
-import { formatPopulation } from "@utils/numberFormat";
-import { planetStateReducer } from "@reducers/planetsStateReducer";
-import { formatImage } from "@utils/formatImage";
-import StyledHome from "./Home.styled";
 import Card from "@components/Card";
 import Pagination from "@components/Pagination";
 import ComboSelect from "@components/ComboSelect";
 import BottomControlsWrapper from "@components/BottomControlsWrapper";
+// reducers
+import { planetStateReducer } from "@reducers/planetsStateReducer";
+import reducerPlanetList, {
+  initialState as planetListInitialState,
+  Planet,
+  SortByType,
+} from "@reducers/reducerGeneric";
+// utils
+import { formatPopulation } from "@utils/numberFormat";
+import { formatImage } from "@utils/formatImage";
+
 const planetsUrl = "src/06-assets/planets/";
 
 const initialState = {
@@ -25,60 +32,76 @@ const initialState = {
   filterBy: "name",
 };
 
-const options = [
+type OptionsType = {
+  name: string;
+  value: SortByType;
+};
+
+const options: OptionsType[] = [
   { name: "-", value: "" },
   { name: "Name", value: "name" },
   { name: "Terrain", value: "terrain" },
   { name: "Population", value: "population" },
 ];
 
+interface SWAPI<T> {
+  count: number;
+  next: string;
+  previous: string;
+  results: T[];
+}
+
 const Home = () => {
   const { fetcher } = useFetch();
-  const [state, dispatch] = useReducer(planetStateReducer, initialState);
-  const { planetList, page, link, totalPages } = state;
-  const { data, isLoading } = useSWR(link, fetcher);
-  const { results, count } = data || {};
+  const [state, dispatch] = useReducer(
+    reducerPlanetList,
+    planetListInitialState
+  );
+  const { planetList, page, totalPages } = state;
+  const { data, isLoading } = useSWR<SWAPI<Planet>>(
+    `planets/?page=${page}`,
+    fetcher
+  );
+  const { next, previous } = data || {};
+
+  useEffect(() => {
+    if (data) {
+      dispatch({
+        type: "PLANET_LIST_LOADED",
+        payload: { planetList: data.results, count: data.count },
+      });
+    }
+  }, [data]);
 
   const handleComboSelect = (incoming: any) => {
     const { selectedValue, order } = incoming;
     const { value } = selectedValue;
     dispatch({
-      type: "FILTER_PLANET_LIST_BY",
+      type: "PLANET_LIST_SORT",
       payload: {
         sort: order,
-        filterBy: value,
-        planetList: planetList,
+        sortBy: value,
       },
     });
   };
 
-  useEffect(() => {
-    if (data) {
-      if (results) {
-        dispatch({
-          type: "UPDATE_PLANET_LIST",
-          payload: {
-            planetList: results,
-          },
-        });
-      }
-      if (count) {
-        dispatch({
-          type: "SET_TOTAL_PAGES",
-          payload: {
-            count: count,
-          },
-        });
-      }
-    }
-  }, [results]);
-
   return (
     <StyledHome>
-      {isLoading && <p>Loading...</p>}
+      {isLoading && (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            zIndex: 100,
+          }}
+        >
+          Loading...
+        </div>
+      )}
       {!isLoading &&
-        planetList?.map((planet: any) => (
-          <Card>
+        planetList.map((planet: Planet) => (
+          <Card key={planet.name}>
             <Image
               width={300}
               height={140}
@@ -88,7 +111,6 @@ const Home = () => {
               }}
               pngSRC={`${planetsUrl}${formatImage(planet.name)}.png`}
               jpgSRC={`${planetsUrl}${formatImage(planet.name)}.jpg`}
-              src={`${planetsUrl}${formatImage(planet.name)}.jpg`}
             />
             <ul>
               <li>{planet.name}</li>
@@ -102,19 +124,21 @@ const Home = () => {
           </Card>
         ))}
       <BottomControlsWrapper>
-        <ComboSelect
-          options={options}
-          inOrder="asc"
-          getComboValue={(incoming: any) => handleComboSelect(incoming)}
-        />
-        <Pagination
-          nextPage={() => dispatch({ type: "NEXT_PAGE" })}
-          prevPage={() => dispatch({ type: "PREV_PAGE" })}
-          currentPage={page}
-          totalPages={totalPages}
-          nextDisabled={page === totalPages || isLoading}
-          prevDisabled={page === 1 || isLoading}
-        />
+        <>
+          <ComboSelect
+            options={options}
+            inOrder="asc"
+            getComboValue={(incoming: any) => handleComboSelect(incoming)}
+          />
+          <Pagination
+            nextPage={() => dispatch({ type: "PLANET_LIST_NEXT" })}
+            prevPage={() => dispatch({ type: "PLANET_LIST_PREVIOUS" })}
+            currentPage={page}
+            totalPages={totalPages}
+            nextDisabled={isLoading || !next}
+            prevDisabled={isLoading || !previous}
+          />
+        </>
       </BottomControlsWrapper>
     </StyledHome>
   );

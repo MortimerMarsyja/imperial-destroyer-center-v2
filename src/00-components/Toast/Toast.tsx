@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 
+type ToastType = "success" | "error" | "warning" | "notification" | "none";
+
 interface Props {
   show: boolean;
   hideToast: () => void;
   children: React.ReactNode;
   toastTimeOut?: number;
-  toastType?: "success" | "error" | "warning" | "info" | null;
+  toastType?: ToastType;
 }
 
 const Toast = ({
@@ -25,18 +27,7 @@ const Toast = ({
   };
 
   const handleToastType = () => {
-    switch (toastType) {
-      case "success":
-        return "green";
-      case "error":
-        return "red";
-      case "warning":
-        return "yellow";
-      case "info":
-        return "blue";
-      default:
-        return "green";
-    }
+    return ["showToast", toastType];
   };
 
   useEffect(() => {
@@ -44,11 +35,11 @@ const Toast = ({
       document
         .querySelector("#toast")
         ?.appendChild(node)
-        .classList.add("show", handleToastType());
+        .classList.add("show", ...handleToastType());
       setTimeout(() => {
         removeNode();
         hideToast();
-      }, toastTimeOut || 3000);
+      }, toastTimeOut || 2000);
     } else {
       removeNode();
     }

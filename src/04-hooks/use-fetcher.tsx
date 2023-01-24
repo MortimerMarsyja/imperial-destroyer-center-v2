@@ -5,11 +5,12 @@ export default function useFetch() {
   const fetcher = (url: string) => {
     return fetch(BASE_URL + url)
       .then((res) => {
-        res.status !== 200 && showToast(res.statusText, "error");
-        res.status === 200 && showToast("Success", "success");
+        res.status === 200 && showToast("Success: fetched data", "success");
         return res.json();
       })
-      .then((res) => res);
+      .catch((error) => {
+        showToast(error.message, "error");
+      });
   };
   return { fetcher };
 }

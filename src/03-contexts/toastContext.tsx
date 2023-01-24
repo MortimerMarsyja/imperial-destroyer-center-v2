@@ -1,13 +1,11 @@
 import Toast from "@components/Toast";
-import { toastReducer, toastInit } from "@reducers/toastReducer";
+import { toastReducer, toastInit, ToastType } from "@reducers/toastReducer";
 import { createContext, useContext } from "react";
 import { useReducer } from "react";
 
 interface ProviderProps {
   children: React.ReactNode;
 }
-
-type ToastType = "success" | "error" | "warning" | "notification";
 
 type ModalContextType = {
   showToast: (content: React.ReactNode, type: ToastType) => void;
@@ -25,12 +23,16 @@ export const ToastContentProvider = ({ children }: ProviderProps) => {
   const showToast = (content: React.ReactNode, type: ToastType) => {
     dispatch({
       type: `${type}_toast`,
-      payload: { content, type, show: true },
+      payload: {
+        content,
+        toastType: type,
+        show: true,
+      },
     });
   };
 
   const hideToast = () => {
-    dispatch({ type: "hide_toast" });
+    dispatch({ type: "none_toast" });
   };
 
   return (
@@ -41,7 +43,7 @@ export const ToastContentProvider = ({ children }: ProviderProps) => {
         toastType={state?.type}
         hideToast={hideToast}
         children={state?.content}
-        toastTimeOut={1200}
+        toastTimeOut={2500}
       />
     </ToastContentContext.Provider>
   );

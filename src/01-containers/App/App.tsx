@@ -14,34 +14,32 @@ import { ThemeProvider } from "@contexts/themeContext";
 
 const App = (): JSX.Element => {
   return (
-    <>
-      <ThemeProvider>
-        <ToastContentProvider>
-          <BrowserRouter>
-            <GlobalContainer />
-            <Navbar />
-            <div className="page-layout">
-              <SideNav />
-              <div className="page-content">
-                <Routes>
-                  {routes.map((route) => (
-                    <Route
-                      key={route.name}
-                      path={route.path}
-                      element={route.element}
-                    />
-                  ))}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </div>
+    <ThemeProvider>
+      <ToastContentProvider>
+        <BrowserRouter>
+          <GlobalContainer />
+          <Navbar />
+          <div className="page-layout">
+            <SideNav />
+            <div className="page-content">
+              <Routes>
+                {routes.map((route) => (
+                  <Route
+                    key={route.name}
+                    path={route.path}
+                    element={route.element}
+                  />
+                ))}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
             </div>
-            <Footer>
-              <div>Trebuchet</div>
-            </Footer>
-          </BrowserRouter>
-        </ToastContentProvider>
-      </ThemeProvider>
-    </>
+          </div>
+          <Footer>
+            <div>Trebuchet</div>
+          </Footer>
+        </BrowserRouter>
+      </ToastContentProvider>
+    </ThemeProvider>
   );
 };
 

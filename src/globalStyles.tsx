@@ -49,39 +49,79 @@ const GlobalStyles = createGlobalStyle<Props>`
   select {
     padding: 0.5rem 1rem;
     border: none;
+    border-radius: 0.5rem;
     background-color:${({ theme }) =>
       theme === "dark" ? themeColors.dark : themeColors.light};
     border-radius: 0.5rem;
     color: ${({ theme }) =>
-      theme === "dark"
-        ? themeColors.light
-        : themeColors.dark};    border-radius: 0.5rem;
+      theme === "dark" ? themeColors.light : themeColors.dark};   
     cursor: pointer;
     &:hover{
       background-color:${({ theme }) =>
         theme === "dark" ? themeColors.gray[800] : themeColors.gray[200]};
     }
-
   }
 
-  #toast{
-    display: none;
-    &.show{
-    display: block;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-    color: red;
-    font-size: 1.2rem;
-    font-weight: 600;
-    animation: toast 0.5s ease-in-out;
+
+
+@keyframes slide {
+    100% { 
+      right: 0;
     }
+
+}
+
+
+@keyframes dissapear {
+  0% {
+    opacity: 1;
   }
+  80%{
+    opacity: 1
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+  .showToast{
+    animation: slide 0.5s forwards, dissapear 2s forwards;
+    position: fixed;
+    box-shadow: 0 2px 5px 1px rgb(64 60 67 / 16%);
+    top: 92px;
+    width: auto;
+    right: 30px;
+    height: 30px;
+    padding: 0 20px;
+    align-items: center;
+    justify-items: center;
+    display: flex;
+    border-radius: 16px;
+    z-index: 999;
+  }
+
+  .success{
+    background-color: ${themeColors.green[500]};
+    color: ${themeColors.gray[100]};
+  }
+
+  .error{
+    background-color: ${themeColors.red[500]};
+    color: ${themeColors.gray[100]};
+  }
+
+  .warning{
+    background-color: ${themeColors.yellow[500]};
+    color: ${themeColors.gray[100]};
+  }
+
+  .notification{
+    background-color: ${themeColors.gray[500]};
+    color: ${themeColors.gray[100]};
+  }
+
+
 
   @media (max-width: 540px) {
     .page-content{

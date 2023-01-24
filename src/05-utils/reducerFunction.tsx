@@ -1,18 +1,10 @@
-import { PlanetListActions } from "@reducers/planetsStateReducer";
-import { ToastActions } from "@reducers/toastReducer";
-import { StarshipActions } from "@reducers/starshipsReducer";
-import { ComboSelectActions } from "@reducers/selectComboReducer";
-
 interface ActionInterface {
-  type: PlanetListActions | StarshipActions | ToastActions | ComboSelectActions;
+  type: string;
   payload?: any;
 }
 
 type CasesInterface = {
-  [key in PlanetListActions | ToastActions | StarshipActions]: <S>(
-    state: S,
-    action: ActionInterface
-  ) => S;
+  [key: string]: <S>(state: S, action: ActionInterface) => S;
 };
 
 const reducerFunction = <S,>(

@@ -1,48 +1,98 @@
-import reducerFunction from "@utils/reducerFunction";
+export type ToastType =
+  | "success"
+  | "error"
+  | "warning"
+  | "notification"
+  | "none";
 
-export function toastInit() {
-  return {
-    show: false,
-    type: "none",
-    content: null,
-  };
-}
-
-interface ToastPayloadInterface {
-  content: React.ReactNode | null;
-  type: "success" | "error" | "warning" | "notification" | "none";
+interface State {
   show: boolean;
+  type: ToastType;
+  content: React.ReactNode | null;
 }
 
-export type ToastActions =
-  | "success_toast"
-  | "notification_toast"
-  | "warning_toast"
-  | "error_toast"
-  | "hide_toast";
-export interface ActionInterface {
-  type: ToastActions;
-  payload?: ToastPayloadInterface;
-}
+type SuccessAction = {
+  type: "success_toast";
+  payload: {
+    content: React.ReactNode;
+    toastType: "success";
+    show: boolean;
+  };
+};
+
+type ErrorAction = {
+  type: "error_toast";
+  payload: {
+    content: React.ReactNode;
+    toastType: "error";
+    show: boolean;
+  };
+};
+
+type WarningAction = {
+  type: "warning_toast";
+  payload: {
+    content: React.ReactNode;
+    toastType: "warning";
+    show: boolean;
+  };
+};
+
+type NotificationAction = {
+  type: "notification_toast";
+  payload: {
+    content: React.ReactNode;
+    toastType: "notification";
+    show: boolean;
+  };
+};
+
+type HideAction = {
+  type: "none_toast";
+};
+
+type ActionInterface =
+  | SuccessAction
+  | ErrorAction
+  | WarningAction
+  | NotificationAction
+  | HideAction;
+
+export const toastInit = {
+  type: "none",
+  show: false,
+  content: null,
+} satisfies State;
 
 const cases = {
-  success_toast: <S,>(state: S, action: ActionInterface) => {
-    return action.payload;
+  success_toast: (state: State, action: SuccessAction) => {
+    const { payload } = action;
+    return { ...state, ...payload };
   },
-  notification_toast: <S,>(state: S, action: ActionInterface) => {
-    return action.payload;
+  notification_toast: (state: State, action: NotificationAction) => {
+    const { payload } = action;
+    return { ...state, ...payload };
   },
-  warning_toast: <S,>(state: S, action: ActionInterface) => {
-    return action.payload;
+  warning_toast: (state: State, action: WarningAction) => {
+    const { payload } = action;
+    return { ...state, ...payload };
   },
-  error_toast: <S,>(state: S, action: ActionInterface) => {
-    return action.payload;
+  error_toast: (state: State, action: ErrorAction): State => {
+    const { payload } = action;
+    return { ...state, ...payload };
   },
-  hide_toast: <S,>(state: S, action: ActionInterface) => {
-    return toastInit();
+  notification_tost: (state: State, action: NotificationAction): State => {
+    const { payload } = action;
+    return { ...state, ...payload };
+  },
+  none_toast: (): State => {
+    {
+      return toastInit;
+    }
   },
 };
 
-export const toastReducer = <S,>(state: S, action: ActionInterface): S => {
-  return reducerFunction(state, action, cases);
+export const toastReducer = (state: State, action: ActionInterface): State => {
+  const { type } = action;
+  return cases[type] ? cases[type](state, action) : state;
 };

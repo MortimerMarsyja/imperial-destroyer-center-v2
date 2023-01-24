@@ -2,13 +2,43 @@ import reducerFunction from "@utils/reducerFunction";
 
 export type PlanetListActions = keyof typeof cases;
 
-interface OutputInterface<Planet> {
+interface People {
+  name: string;
+  birth_year: string;
+  eye_color: string;
+  gender: string;
+  hair_color: string;
+  height: string;
+  mass: string;
+  skin_color: string;
+  homeworld: string;
+  url: string;
+  created: string;
+  edited: string;
+}
+interface Planet {
+  name: string;
+  diameter: string;
+  rotation_period: string;
+  orbital_period: string;
+  gravity: string;
+  population: string;
+  climate: string;
+  terrain: string;
+  surface_water: string;
+  residents: People[];
+  url: string;
+  created: string;
+  edited: string;
+}
+
+interface OutputInterface {
   planetList: Planet[];
   page: number;
   link: string;
   totalPages: number;
 }
-interface InputInterface<Planet> {
+interface InputInterface {
   planetList?: Planet[];
   page?: number;
   count?: number;
@@ -16,25 +46,19 @@ interface InputInterface<Planet> {
   filterBy?: string;
 }
 
-export interface ActionInterface<Planet> {
+export interface ActionInterface {
   type: PlanetListActions;
-  payload?: InputInterface<Planet>;
+  payload?: InputInterface;
 }
 
 const cases = {
-  UPDATE_PLANET_LIST: <Planet,>(
-    state: OutputInterface<Planet>,
-    action: ActionInterface<Planet>
-  ) => {
+  UPDATE_PLANET_LIST: (state: OutputInterface, action: ActionInterface) => {
     return {
       ...state,
       planetList: action.payload?.planetList,
     };
   },
-  NEXT_PAGE: <Planet,>(
-    state: OutputInterface<Planet>,
-    action: ActionInterface<Planet>
-  ) => {
+  NEXT_PAGE: (state: OutputInterface, action: ActionInterface) => {
     if (state.totalPages && state.page === state.totalPages) return state;
     return {
       ...state,
@@ -42,10 +66,7 @@ const cases = {
       link: `planets?page=${state.page + 1}`,
     };
   },
-  PREV_PAGE: <Planet,>(
-    state: OutputInterface<Planet>,
-    action: ActionInterface<Planet>
-  ) => {
+  PREV_PAGE: (state: OutputInterface, action: ActionInterface) => {
     if (state.page === 1) {
       return {
         ...state,
@@ -57,24 +78,17 @@ const cases = {
       link: state.page === 1 ? "planets" : `planets?page=${state.page - 1}`,
     };
   },
-  SET_TOTAL_PAGES: <Planet,>(
-    state: OutputInterface<Planet>,
-    action: ActionInterface<Planet>
-  ) => {
+  SET_TOTAL_PAGES: (state: OutputInterface, action: ActionInterface) => {
     if (!action.payload?.count) return state;
     return {
       ...state,
       totalPages: Math.ceil(action.payload?.count / 10),
     };
   },
-  FILTER_PLANET_LIST_BY: <Planet,>(
-    state: OutputInterface<Planet>,
-    action: ActionInterface<Planet>
-  ) => {
+  FILTER_PLANET_LIST_BY: (state: OutputInterface, action: ActionInterface) => {
     const { payload } = action;
     if (!payload) return state;
     const { sort, filterBy, planetList } = payload;
-    console.log("show me data", { sort, filterBy, planetList });
     if (!planetList || !filterBy || !sort) return state;
     const sortedPlanetList = planetList.sort((a: Planet, b: Planet) => {
       if (sort === "asc") {
@@ -103,9 +117,9 @@ const cases = {
   },
 };
 
-export const planetStateReducer = <Planet,>(
-  state: OutputInterface<Planet>,
-  action: ActionInterface<Planet>
-): OutputInterface<Planet> => {
-  return reducerFunction(state, action, cases);
+export const planetStateReducer = (
+  state: OutputInterface,
+  action: ActionInterface
+): OutputInterface => {
+  return reducerFunction<OutputInterface>(state, action, cases);
 };
