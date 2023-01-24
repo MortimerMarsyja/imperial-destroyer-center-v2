@@ -7,7 +7,7 @@ export type ToastType =
 
 interface State {
   show: boolean;
-  type: ToastType;
+  toastType: ToastType;
   content: React.ReactNode | null;
 }
 
@@ -59,7 +59,7 @@ type ActionInterface =
   | HideAction;
 
 export const toastInit = {
-  type: "none",
+  toastType: "none",
   show: false,
   content: null,
 } satisfies State;

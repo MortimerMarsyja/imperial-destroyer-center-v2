@@ -1,7 +1,6 @@
+import { ToastType } from "@reducers/toastReducer";
 import { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-
-type ToastType = "success" | "error" | "warning" | "notification" | "none";
 
 interface Props {
   show: boolean;
@@ -19,7 +18,6 @@ const Toast = ({
   toastType,
 }: Props) => {
   const [node] = useState(document.createElement("div"));
-
   const removeNode = () => {
     if (document.querySelector("#toast")?.children.length) {
       document.querySelector("#toast")?.childNodes[0].remove();

@@ -86,7 +86,7 @@ const GlobalStyles = createGlobalStyle<Props>`
 
 
   .showToast{
-    animation: slide 0.5s forwards, dissapear 2s forwards;
+     animation: slide 0.5s forwards, dissapear 2s forwards; 
     position: fixed;
     box-shadow: 0 2px 5px 1px rgb(64 60 67 / 16%);
     top: 92px;

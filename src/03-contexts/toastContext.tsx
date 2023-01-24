@@ -19,7 +19,6 @@ export const ToastContentContext = createContext<ModalContextType>({
 
 export const ToastContentProvider = ({ children }: ProviderProps) => {
   const [state, dispatch] = useReducer(toastReducer, toastInit);
-
   const showToast = (content: React.ReactNode, type: ToastType) => {
     dispatch({
       type: `${type}_toast`,
@@ -40,7 +39,7 @@ export const ToastContentProvider = ({ children }: ProviderProps) => {
       {children}
       <Toast
         show={state?.show}
-        toastType={state?.type}
+        toastType={state?.toastType}
         hideToast={hideToast}
         children={state?.content}
         toastTimeOut={2500}
