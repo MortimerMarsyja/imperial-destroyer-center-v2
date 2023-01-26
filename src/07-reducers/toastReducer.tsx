@@ -1,33 +1,33 @@
-export type ToastType =
-  | "success"
-  | "error"
-  | "warning"
-  | "notification"
-  | "none";
+import type { TypeOfToasts } from "@myTypes/ToastTypes";
 
+export const toastInit = {
+  toastType: "hide",
+  show: false,
+  content: null,
+} satisfies State;
 interface State {
   show: boolean;
-  toastType: ToastType;
+  toastType: TypeOfToasts;
   content: React.ReactNode | null;
 }
 
-type SuccessAction = {
+interface SuccessAction {
   type: "success_toast";
   payload: {
     content: React.ReactNode;
     toastType: "success";
     show: boolean;
   };
-};
+}
 
-type ErrorAction = {
+interface ErrorAction {
   type: "error_toast";
   payload: {
     content: React.ReactNode;
     toastType: "error";
     show: boolean;
   };
-};
+}
 
 type WarningAction = {
   type: "warning_toast";
@@ -48,51 +48,36 @@ type NotificationAction = {
 };
 
 type HideAction = {
-  type: "none_toast";
+  type: "hide_toast";
+  payload: typeof toastInit;
 };
 
-type ActionInterface =
+export type ShowActions =
+  | SuccessAction
+  | ErrorAction
+  | WarningAction
+  | NotificationAction;
+
+export type ToastActions =
   | SuccessAction
   | ErrorAction
   | WarningAction
   | NotificationAction
   | HideAction;
 
-export const toastInit = {
-  toastType: "none",
-  show: false,
-  content: null,
-} satisfies State;
-
-const cases = {
-  success_toast: (state: State, action: SuccessAction) => {
-    const { payload } = action;
-    return { ...state, ...payload };
-  },
-  notification_toast: (state: State, action: NotificationAction) => {
-    const { payload } = action;
-    return { ...state, ...payload };
-  },
-  warning_toast: (state: State, action: WarningAction) => {
-    const { payload } = action;
-    return { ...state, ...payload };
-  },
-  error_toast: (state: State, action: ErrorAction): State => {
-    const { payload } = action;
-    return { ...state, ...payload };
-  },
-  notification_tost: (state: State, action: NotificationAction): State => {
-    const { payload } = action;
-    return { ...state, ...payload };
-  },
-  none_toast: (): State => {
-    {
+export const toastReducer = (state: State, action: ToastActions) => {
+  switch (action.type) {
+    case "success_toast":
+      return { ...state, ...action.payload };
+    case "error_toast":
+      return { ...state, ...action.payload };
+    case "warning_toast":
+      return { ...state, ...action.payload };
+    case "notification_toast":
+      return { ...state, ...action.payload };
+    case "hide_toast":
       return toastInit;
-    }
-  },
-};
-
-export const toastReducer = (state: State, action: ActionInterface): State => {
-  const { type } = action;
-  return cases[type] ? cases[type](state, action) : state;
+    default:
+      return state;
+  }
 };

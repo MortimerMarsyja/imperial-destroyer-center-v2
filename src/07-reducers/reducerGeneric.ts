@@ -1,3 +1,6 @@
+import { People } from "@myTypes/People";
+import { Planet } from "@myTypes/Planet";
+
 type PlanetListLoadedAction = {
   type: "PLANET_LIST_LOADED";
   payload: { planetList: Planet[]; count: number };
@@ -26,37 +29,6 @@ type PlanetActionType =
   | PlanetListNextAction
   | PlanetListPreviousAction
   | PlanetListReset;
-
-export interface People {
-  name: string;
-  birth_year: string;
-  eye_color: string;
-  gender: string;
-  hair_color: string;
-  height: string;
-  mass: string;
-  skin_color: string;
-  homeworld: string;
-  url: string;
-  created: string;
-  edited: string;
-}
-
-export interface Planet {
-  name: string;
-  diameter: string;
-  rotation_period: string;
-  orbital_period: string;
-  gravity: string;
-  population: string;
-  climate: string;
-  terrain: string;
-  surface_water: string;
-  residents: People[];
-  url: string;
-  created: string;
-  edited: string;
-}
 
 export type SortByType = "" | "name" | "population" | "terrain";
 
@@ -111,57 +83,95 @@ function sortPlanets(
   return sortedPlanetList;
 }
 
-const cases = {
-  PLANET_LIST_LOADED: (
-    state: PlanetState,
-    action: PlanetListLoadedAction
-  ): PlanetState => {
-    const { planetList, count } = action.payload;
-    const { sort, sortBy } = state;
-    const planetListInitial = [...planetList];
-    return {
-      ...state,
-      planetList: sortPlanets(planetList, planetListInitial, sort, sortBy),
-      planetListInitial,
-      totalPages: Math.ceil(count / PLANETS_PER_PAGE),
-    };
-  },
-  PLANET_LIST_SORT: (
-    state: PlanetState,
-    action: PlanetListSortAction
-  ): PlanetState => {
-    const { sort, sortBy } = action.payload;
-    return {
-      ...state,
-      sort,
-      sortBy,
-      planetList: sortPlanets(
-        state.planetList,
-        state.planetListInitial,
-        sort,
-        sortBy
-      ),
-    };
-  },
-  PLANET_LIST_NEXT: (state: PlanetState): PlanetState => {
-    return {
-      ...state,
-      page: state.page + 1,
-    };
-  },
-  PLANET_LIST_PREVIOUS: (state: PlanetState): PlanetState => {
-    return {
-      ...state,
-      page: state.page - 1,
-    };
-  },
-  PLANET_LIST_RESET: (): PlanetState => {
-    return initialState;
-  },
-};
+// const cases = {
+//   PLANET_LIST_LOADED: (
+//     state: PlanetState,
+//     action: PlanetListLoadedAction
+//   ): PlanetState => {
+//     const { planetList, count } = action.payload;
+//     const { sort, sortBy } = state;
+//     const planetListInitial = [...planetList];
+//     return {
+//       ...state,
+//       planetList: sortPlanets(planetList, planetListInitial, sort, sortBy),
+//       planetListInitial,
+//       totalPages: Math.ceil(count / PLANETS_PER_PAGE),
+//     };
+//   },
+//   PLANET_LIST_SORT: (
+//     state: PlanetState,
+//     action: PlanetListSortAction
+//   ): PlanetState => {
+//     const { sort, sortBy } = action.payload;
+//     return {
+//       ...state,
+//       sort,
+//       sortBy,
+//       planetList: sortPlanets(
+//         state.planetList,
+//         state.planetListInitial,
+//         sort,
+//         sortBy
+//       ),
+//     };
+//   },
+//   PLANET_LIST_NEXT: (state: PlanetState): PlanetState => {
+//     return {
+//       ...state,
+//       page: state.page + 1,
+//     };
+//   },
+//   PLANET_LIST_PREVIOUS: (state: PlanetState): PlanetState => {
+//     return {
+//       ...state,
+//       page: state.page - 1,
+//     };
+//   },
+//   PLANET_LIST_RESET: (): PlanetState => {
+//     return initialState;
+//   },
+// };
 
 const reducer = (state: PlanetState, action: PlanetActionType): PlanetState => {
-  return cases[action.type] ? cases[action.type](state, action) : state;
+  switch (action.type) {
+    case "PLANET_LIST_LOADED":
+      const { planetList, count } = action.payload;
+      const { sort, sortBy } = state;
+      const planetListInitial = [...planetList];
+      return {
+        ...state,
+        planetList: sortPlanets(planetList, planetListInitial, sort, sortBy),
+        planetListInitial,
+        totalPages: Math.ceil(count / PLANETS_PER_PAGE),
+      };
+    case "PLANET_LIST_SORT":
+      const { sort: sortAction, sortBy: sortByAction } = action.payload;
+      return {
+        ...state,
+        sort: sortAction,
+        sortBy: sortByAction,
+        planetList: sortPlanets(
+          state.planetList,
+          state.planetListInitial,
+          sortAction,
+          sortByAction
+        ),
+      };
+    case "PLANET_LIST_NEXT":
+      return {
+        ...state,
+        page: state.page + 1,
+      };
+    case "PLANET_LIST_PREVIOUS":
+      return {
+        ...state,
+        page: state.page - 1,
+      };
+    case "PLANET_LIST_RESET":
+      return initialState;
+    default:
+      return state;
+  }
 };
 
 export default reducer;
