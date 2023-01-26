@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Project Template using Vite, React, Storybook, Tailwind, Cypress, Jest, Typescript,SWR",
+  "description": "Project Template using Vite, React, Storybook, Tailwind, Cypress, Vitest, Typescript,SWR",
   "scripts": {
     "start": "vite",
     "build": "tsc -p tsconfig.prod.json && vite build",
