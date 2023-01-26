@@ -121,10 +121,6 @@ const GlobalStyles = createGlobalStyle<Props>`
     color: ${themeColors.gray[100]};
   }
 
-
-
-  
-
   @media (max-width: ${devices.mobileL}) {
     .page-content{
     margin-left: 120px;
