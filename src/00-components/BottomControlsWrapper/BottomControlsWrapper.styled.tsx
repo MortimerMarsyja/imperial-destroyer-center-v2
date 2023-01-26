@@ -1,6 +1,6 @@
 import themeColors from "@utils/theme";
 import styled from "styled-components";
-
+import devices from "@utils/devices";
 interface Props {
   theme: string;
 }
@@ -8,7 +8,7 @@ interface Props {
 const StyledBottomControlsWrapper = styled.div<Props>`
   position: fixed;
   bottom: 60px;
-  left: calc(50% - 192px);
+  left: calc(50% - 206px);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -28,6 +28,16 @@ const StyledBottomControlsWrapper = styled.div<Props>`
   transition: all 0.2s ease-in-out;
   &:hover {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  }
+  @media (max-width: ${devices.mobileL}) {
+    flex-direction: column;
+    left: calc(50% - 112px);
+    height: auto;
+    padding: 6px 0;
+    &:nth-child(1) {
+      margin-bottom: 20px;
+      color: red !important;
+    }
   }
 `;
 

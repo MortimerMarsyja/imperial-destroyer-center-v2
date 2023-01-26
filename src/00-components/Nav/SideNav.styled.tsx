@@ -1,3 +1,4 @@
+import devices from "@utils/devices";
 import themeColors from "@utils/theme";
 import styled from "styled-components";
 
@@ -49,7 +50,7 @@ const StyledSideNav = styled.div<Props>`
   .logo-container {
     margin-top: 2em;
   }
-  @media (max-width: 380px) {
+  @media (max-width: ${devices.mobileL}) {
     width: 30px;
     overflow: hidden;
     .initial {

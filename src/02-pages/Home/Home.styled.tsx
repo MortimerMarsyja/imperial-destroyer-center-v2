@@ -5,6 +5,7 @@ const StyledHome = styled.div`
   flex-wrap: wrap;
   align-items: center;
   position: relative;
+  margin-bottom: 50px;
 `;
 
 export default StyledHome;

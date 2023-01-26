@@ -1,3 +1,4 @@
+import devices from "@utils/devices";
 import themeColors from "@utils/theme";
 import { createGlobalStyle } from "styled-components";
 
@@ -11,7 +12,6 @@ const GlobalStyles = createGlobalStyle<Props>`
       theme === "dark" ? themeColors.gray[900] : themeColors.gray[100]};
     margin: 0;
     padding: 0;
-    height: 100vh;
     font-family:  Helvetica, Sans-Serif;
   }
   #root{
@@ -123,13 +123,9 @@ const GlobalStyles = createGlobalStyle<Props>`
 
 
 
-  @media (max-width: 540px) {
-    .page-content{
-    margin-left: 160px;
-    }
-  }
+  
 
-  @media (max-width: 365px) {
+  @media (max-width: ${devices.mobileL}) {
     .page-content{
     margin-left: 120px;
     }
