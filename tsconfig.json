@@ -24,7 +24,8 @@
       "@contexts/*": ["03-contexts/*"],
       "@utils/*": ["05-utils/*"],
       "@assets/*": ["06-assets/*"],
-      "@reducers/*": ["07-reducers/*"]
+      "@reducers/*": ["07-reducers/*"],
+      "@myTypes/*": ["08-types/*"]
     }
   },
   "include": ["src", "./setupTest.ts"],
