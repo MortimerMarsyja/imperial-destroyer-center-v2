@@ -11,15 +11,14 @@ import Pagination from "@components/Pagination";
 import ComboSelect from "@components/ComboSelect";
 import BottomControlsWrapper from "@components/BottomControlsWrapper";
 // reducers
-import { planetStateReducer } from "@reducers/planetsStateReducer";
 import reducerPlanetList, {
   initialState as planetListInitialState,
-  Planet,
   SortByType,
 } from "@reducers/reducerGeneric";
 // utils
 import { formatPopulation } from "@utils/numberFormat";
 import { formatImage } from "@utils/formatImage";
+import { Planet } from "@myTypes/Planet";
 
 const planetsUrl = "src/06-assets/planets/";
 
