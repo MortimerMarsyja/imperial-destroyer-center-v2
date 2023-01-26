@@ -7,7 +7,7 @@ interface Props {
   hideToast: () => void;
   children: React.ReactNode;
   toastTimeOut?: number;
-  toastType?: ToastType;
+  toastType: ToastType;
 }
 
 const Toast = ({
