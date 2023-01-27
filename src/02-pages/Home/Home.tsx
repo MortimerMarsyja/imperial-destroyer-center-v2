@@ -22,15 +22,6 @@ import { Planet } from "@myTypes/Planet";
 
 const planetsUrl = "src/06-assets/planets/";
 
-const initialState = {
-  planetList: [],
-  page: 1,
-  link: "planets",
-  totalPages: 0,
-  sort: "asc",
-  filterBy: "name",
-};
-
 type OptionsType = {
   name: string;
   value: SortByType;
@@ -91,8 +82,12 @@ const Home = () => {
           style={{
             position: "absolute",
             top: "50%",
-            left: "50%",
+            left: "calc(50% - 100px)",
             zIndex: 100,
+            justifyContent: "center",
+            alignItems: "center",
+            display: "flex",
+            height: "100vh",
           }}
         >
           Loading...
