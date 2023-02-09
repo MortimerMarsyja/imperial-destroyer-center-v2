@@ -24,7 +24,7 @@ const ComboSelect: FC<Props> = ({ options, inOrder, getComboValue }) => {
     order: inOrder,
   };
   const [state, dispatch] = useReducer(comboSelectReducer, initialState);
-  const { order } = state;
+  const { order,selectedValue } = state;
 
   const handleUpdateOrder = () => {
     dispatch({
@@ -39,8 +39,8 @@ const ComboSelect: FC<Props> = ({ options, inOrder, getComboValue }) => {
   }, [state]);
   return (
     <StyledComboSelect theme={theme}>
-      <button onClick={handleUpdateOrder}>
-        {order === "asc" ? <Asc size={18} /> : <Desc size={18} />}
+      <button disabled={selectedValue.name === '-'} onClick={handleUpdateOrder}>
+        {order === "asc" ? <Asc disabled={selectedValue.name === '-'} size={18} /> : <Desc size={18} />}
       </button>
       <select
         onChange={(e) => {

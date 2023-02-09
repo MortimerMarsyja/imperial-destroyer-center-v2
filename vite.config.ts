@@ -3,8 +3,6 @@ import svgr from "vite-plugin-svgr";
 import tsconfigPaths from "vite-tsconfig-paths";
 import react from "@vitejs/plugin-react";
 
-const ASSET_URL = process.env.ASSET_URL || "";
-
 export default {
   stories: [
     "../stories/**/*.stories.mdx",

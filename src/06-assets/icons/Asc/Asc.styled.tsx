@@ -6,8 +6,10 @@ interface Props {
 }
 
 const StyledAsc = styled.svg<Props>`
-  stroke: ${({ theme }) =>
-    theme === "light" ? themeColors.dark : themeColors.light};
+  stroke: ${({ theme }) => theme === 'dark'?themeColors.light:themeColors.dark};
+  .disabled{
+    stroke: ${({ theme }) => theme === 'dark'?themeColors.gray[100]:themeColors.gray[100]};
+  }
 `;
 
 export default StyledAsc;

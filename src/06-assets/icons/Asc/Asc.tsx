@@ -3,14 +3,15 @@ import { FC } from "react";
 import StyledAsc from "./Asc.styled";
 
 interface Props {
-  srokeC?: string;
+  disabled?: boolean;
   size?: number;
 }
 
-const Asc: FC<Props> = ({ size }) => {
+const Asc: FC<Props> = ({ size,disabled = false }) => {
   const { theme } = useThemeContext();
   return (
     <StyledAsc
+    className={disabled?'disabled':''}
       theme={theme}
       width={size}
       height={size}

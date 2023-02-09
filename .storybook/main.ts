@@ -1,5 +1,5 @@
-const path = require("path");
-module.exports = {
+import path from "path";
+const conf = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
     "@storybook/addon-links",
@@ -14,3 +14,5 @@ module.exports = {
     docsPage: true,
   },
 };
+
+export default conf;
