@@ -4,18 +4,18 @@ import { useReducer } from "react";
 import { toastReducer, toastInit, ShowActions } from "@reducers/toastReducer";
 // components
 import Toast from "@components/Toast";
-import { TypeOfToasts } from "@myTypes/ToastTypes";
+import { ShowToast } from "@myTypes/ToastTypes";
 // types
 interface ProviderProps {
   children: React.ReactNode;
 }
 
-type ModalContextType = {
-  showToast: (content: React.ReactNode, type: TypeOfToasts) => void;
+type ToastContextType = {
+  showToast: (content: React.ReactNode, type: ShowToast) => void;
   hideToast: () => void;
 };
 
-export const ToastContentContext = createContext<ModalContextType>({
+export const ToastContentContext = createContext<ToastContextType>({
   showToast: () => {},
   hideToast: () => {},
 });
@@ -23,7 +23,7 @@ export const ToastContentContext = createContext<ModalContextType>({
 export const ToastContentProvider = ({ children }: ProviderProps) => {
   const [state, dispatch] = useReducer(toastReducer, toastInit);
   const { show, toastType, content } = state;
-  const showToast = (content: React.ReactNode, type: TypeOfToasts) => {
+  const showToast = (content: React.ReactNode, type: ShowToast) => {
     const toastContent = {
       type: `${type}_toast`,
       payload: {
@@ -31,21 +31,21 @@ export const ToastContentProvider = ({ children }: ProviderProps) => {
         toastType: type,
         show: true,
       },
-    } satisfies ShowActions;
+    } as ShowActions;
 
     dispatch(toastContent);
   };
 
   const hideToast = () => {
     dispatch({
-      type: "none_toast",
+      type: "hide_toast",
       payload: {
-        toastType: "none",
+        toastType: "hide",
         show: false,
         content: null,
       },
     });
-  };
+  } 
 
   return (
     <ToastContentContext.Provider value={{ hideToast, showToast }}>

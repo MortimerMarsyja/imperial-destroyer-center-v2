@@ -4,3 +4,8 @@ export type TypeOfToasts =
   | "warning"
   | "notification"
   | "hide";
+
+export type ShowToast =   | "success"
+| "error"
+| "warning"
+| "notification"

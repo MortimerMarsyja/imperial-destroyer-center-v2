@@ -12,9 +12,11 @@ const StyledImage = styled.div<Props>`
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  img {
+  color: #fff;
+  img { 
     object-fit: cover;
   }
 `;
 
 export default StyledImage;
+

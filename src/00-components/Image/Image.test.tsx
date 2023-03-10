@@ -24,7 +24,6 @@ describe("<Image />", () => {
         alt="Naboo planet image"
         src="src/assets/planets/naboo.jpg"
         jpgSRC="src/assets/planets/naboo.png"
-        pngSRC="src/assets/planets/naboo.png"
         onError={(e) => {
           e.currentTarget.src = `https://images.hdqwalls.com/download/joyful-planet-4k-ly-2560x1700.jpg`;
         }}

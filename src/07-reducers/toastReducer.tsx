@@ -20,6 +20,15 @@ interface SuccessAction {
   };
 }
 
+interface NotificationAction  {
+  type: "notification_toast";
+  payload: {
+    content: React.ReactNode;
+    toastType: "notification";
+    show: boolean;
+  };
+};
+
 interface ErrorAction {
   type: "error_toast";
   payload: {
@@ -29,7 +38,7 @@ interface ErrorAction {
   };
 }
 
-type WarningAction = {
+interface WarningAction  {
   type: "warning_toast";
   payload: {
     content: React.ReactNode;
@@ -38,14 +47,6 @@ type WarningAction = {
   };
 };
 
-type NotificationAction = {
-  type: "notification_toast";
-  payload: {
-    content: React.ReactNode;
-    toastType: "notification";
-    show: boolean;
-  };
-};
 
 type HideAction = {
   type: "hide_toast";

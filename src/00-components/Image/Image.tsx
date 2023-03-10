@@ -4,17 +4,17 @@ import StyledImage from "./Image.styled";
 interface ImageProps {
   alt: string;
   onError?: (event: React.SyntheticEvent<HTMLImageElement, Event>) => void;
-  pngSRC: string;
+  src: string;
   width?: number;
   height?: number;
-  jpgSRC: string;
+  jpgSRC?: string;
 }
 
 const Image: FC<ImageProps> = ({
   alt,
   onError,
-  pngSRC,
-  jpgSRC,
+  src, 
+  jpgSRC='',
   width = 200,
   height = 200,
 }) => {
@@ -24,7 +24,7 @@ const Image: FC<ImageProps> = ({
         <img
           height={height}
           width={width}
-          src={pngSRC}
+          src={src}
           alt={alt}
           onError={onError}
         />
@@ -32,5 +32,7 @@ const Image: FC<ImageProps> = ({
     </StyledImage>
   );
 };
+
+
 
 export default Image;
